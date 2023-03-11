@@ -4,6 +4,7 @@ import os
 import openai
 import constants
 from telegram import Update
+from telegram.constants import ChatAction
 from telegram.ext import (
     filters,
     ApplicationBuilder,
@@ -66,6 +67,8 @@ async def message(update: Update, context: CallbackContext) -> None:
         update (Update): The update object from Telegram.
         context (CallbackContext): The context object from Telegram.
     """
+    await context.bot.send_chat_action(chat_id=update.effective_chat.id,
+                                       action=ChatAction.TYPING)
     if 'tokenized_message_limiter' not in context.user_data:
         context.user_data[
             'tokenized_message_limiter'] = TokenizedMessageLimiter()
